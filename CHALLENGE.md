@@ -8,7 +8,7 @@ Good luck and happy coding!
 
 ### Ready to start?
 
-When you're ready to work on the challenge, clone (and not fork) the repo and _implement each task as a separate pull request_ against your version of the repo. Prepare the PRs as if you would when contributing to a project you develop with a team. Merge each PR when you're done with a task.
+When you're ready to work on the challenge, make a copy of the repo and _implement each task as a separate pull request_ against your version of the repo. Prepare the PRs as if you would when contributing to a project you develop with a team. Merge each PR when you're done with a task.
 
 When you're ready to submit your challenge, share the link to your repo with us. If you prefer to keep it private, we will provide you with some emails to invite to the repo. You are welcome to deploy your challenge online but it is not a requirement.
 
