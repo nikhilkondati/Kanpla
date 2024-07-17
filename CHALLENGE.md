@@ -43,8 +43,6 @@ Acceptance criteria
 > -   You are free to solve this in any way you wish. However, you don't have to code everything and can also use your pull request to explain a longer-term solution if needed. We will discuss your solution in the next interview round.
 
 
-### 2. Add a feature
-
 ## Finished?
 
 Once you have completed your challenge share your repo with us (someone will provide you with emails to invite). If we like what we see, we will discuss your solution in depth in the next stage of the interview.
