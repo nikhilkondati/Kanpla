@@ -63,10 +63,10 @@ server.get('/orders/:id/order-total', async (request, reply) => {
     const order = getOrderById(parseInt(id, 10))
 
     if (order) {
-        const total = order.products.reduce(
+        const total = Number((order.products.reduce(
             (acc, product) => acc + product.price * product.count,
             0,
-        )
+        )).toFixed(2));
 
         return reply.status(201).send({
             total,
