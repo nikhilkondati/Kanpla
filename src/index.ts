@@ -5,6 +5,8 @@ import {
     createOrder,
     updateOrder,
     deleteOrder,
+    getUserBalanceAtDate,
+    getBalanceHistory,
 } from './mockDatabaseClient'
 import { Order } from './types'
 import swagger from '@fastify/swagger'
@@ -75,6 +77,30 @@ server.get('/orders/:id/order-total', async (request, reply) => {
 
     reply.status(404).send({ message: 'Order not found' })
 })
+
+server.get('/users/:userId/balance', async (request, reply) => {
+    const { userId } = request.params as { userId: string };
+    const { date } = request.query as { date?: string };
+
+    const balanceDate = date ? new Date(date) : new Date();
+    try {
+        const balance = getUserBalanceAtDate(userId, balanceDate);
+        return reply.send({ userId, date: balanceDate, balance });
+    } catch (error) {
+        reply.status(404).send({ message: 'User not found or balance calculation error' });
+    }
+});
+
+server.get('/users/:userId/balance-history', async (request, reply) => {
+    const { userId } = request.params as { userId: string };
+
+    const balanceHistory = getBalanceHistory(userId);
+    if (balanceHistory.length > 0) {
+        return reply.send(balanceHistory);
+    } else {
+        reply.status(404).send({ message: 'No balance history found for user' });
+    }
+});
 
 server.post('/orders', async (request, reply) => {
     const { userId, products } = request.body as Order
