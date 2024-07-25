@@ -3,7 +3,7 @@
     "info": {
         "title": "Kanpla Backend Challenge",
         "description": "Ordering management API",
-        "version": "0.1.0"
+        "version": "0.1.1"
     },
     "servers": [
         {
@@ -175,6 +175,90 @@
                     }
                 }
             }
+        },
+        "/users/{userId}/balance": {
+            "get": {
+                "summary": "Get user balance at a specific date",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User balance retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "userId": {
+                                            "type": "string"
+                                        },
+                                        "date": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "balance": {
+                                            "type": "number"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "User not found or balance calculation error"
+                    }
+                }
+            }
+        },
+        "/users/{userId}/balance-history": {
+            "get": {
+                "summary": "Get user balance history",
+                "parameters": [
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User balance history retrieved",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/BalanceHistory"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "No balance history found for user"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -183,7 +267,7 @@
                 "type": "object",
                 "properties": {
                     "userId": {
-                        "type": "integer"
+                        "type": "string"
                     },
                     "products": {
                         "type": "array",
@@ -218,6 +302,26 @@
                     "name",
                     "price",
                     "count"
+                ]
+            },
+            "BalanceHistory": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "balance": {
+                        "type": "number"
+                    }
+                },
+                "required": [
+                    "userId",
+                    "date",
+                    "balance"
                 ]
             }
         }

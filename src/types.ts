@@ -17,3 +17,10 @@ export type Product = {
     price: number
     count: number
 }
+
+export type BalanceHistory = {
+    userId: string;
+    date: Date;
+    balance: number;
+}
+

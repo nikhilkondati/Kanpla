@@ -1,11 +1,12 @@
 // mockDatabase.ts
 
 import { seededOrders, seededUsers } from './db'
-import { Order, Product, User } from './types'
+import { Order, Product, User, BalanceHistory } from './types'
 
 let database = {
     orders: seededOrders,
     users: seededUsers,
+    balanceHistory: [] as BalanceHistory[],
 }
 
 let currentId = 1
@@ -23,6 +24,20 @@ export const createOrder = (userId: string, products: Product[]): Order => {
         createdAt: new Date(),
     }
     database.orders.push(newOrder)
+
+    // Update user balance and balance history
+    const user = getUserById(userId);
+    if (user) {
+        const orderTotal = products.reduce((total, product) => 
+            total + product.price * product.count, 0);
+        user.balance -= orderTotal;
+        database.balanceHistory.push({
+            userId,
+            date: newOrder.createdAt,
+            balance: user.balance,
+        });
+        updateUser(userId, { balance: user.balance });
+    }
     return newOrder
 }
 
@@ -85,3 +100,21 @@ export const deleteUser = (id: string): boolean => {
 
 export const getOrdersByUserId = (userId: string): Order[] =>
     database.orders.filter(order => order.userId === userId)
+
+
+export const getUserBalanceAtDate = (userId: string, date: Date): number => {
+    const user = getUserById(userId);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const balance = database.balanceHistory
+        .filter(bh => bh.userId === userId && bh.date <= date)
+        .sort((a, b) => b.date.getTime() - a.date.getTime())[0]?.balance || user.balance;
+        
+        
+    return balance;
+}
+
+export const getBalanceHistory = (userId: string): BalanceHistory[] => 
+    database.balanceHistory.filter(bh => bh.userId === userId);
